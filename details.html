@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details | DreamHome</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Extra styles specifically for the details page layout */
+        .details-container { max-width: 1200px; margin: 50px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
+        .main-img { width: 100%; height: 500px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 30px 0; }
+        .stat-box { background: white; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #eee; }
+        .stat-box i { color: var(--accent); font-size: 1.2rem; margin-bottom: 8px; display: block; }
+        .stat-box span { font-weight: 700; color: var(--primary); }
+        .amenity-tag { display: inline-block; background: #f1f5f9; padding: 8px 15px; border-radius: 8px; margin: 5px; font-size: 0.85rem; color: var(--text-slate); font-weight: 600; }
+        .amenity-tag i { color: #42de63; margin-right: 5px; }
+        .sidebar-form { position: sticky; top: 100px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .agent-card { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+        .agent-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">DreamHome. <span>G.CHAKRADHAR</span></div>
+        <div class="nav-links"><a href="index.html">← Back to Listings</a></div>
+    </nav>
+
+    <div id="loading" style="text-align:center; padding:100px; font-size:1.5rem; font-weight:700;">Loading Excellence...</div>
+
+    <main id="content" class="details-container" style="display:none;">
+        <div class="left-col">
+            <img id="propImage" class="main-img" src="" alt="Property">
+            
+            <div style="margin-top:30px;">
+                <span style="background:var(--primary); color:white; padding:5px 12px; border-radius:5px; font-size:0.7rem; font-weight:800;">FOR SALE</span>
+                <h1 id="propTitle" style="font-size:2.5rem; margin:15px 0 5px;"></h1>
+                <p id="propAddress" style="color:var(--text-slate); font-size:1.1rem; margin-bottom:10px;"></p>
+                <h2 id="propPrice" style="color:var(--accent); font-size:2rem; font-weight:800;"></h2>
+
+                <div class="stats-grid">
+                    <div class="stat-box"><i class="fa-solid fa-bed"></i><span id="propBeds"></span> Beds</div>
+                    <div class="stat-box"><i class="fa-solid fa-bath"></i><span id="propBaths"></span> Baths</div>
+                    <div class="stat-box"><i class="fa-solid fa-maximize"></i><span id="propSqft"></span> Sqft</div>
+                    <div class="stat-box"><i class="fa-regular fa-calendar"></i><span id="propYear"></span> Built</div>
+                </div>
+
+                <h3>Description</h3>
+                <p id="propDesc" style="color:var(--text-slate); line-height:1.8; margin-bottom:30px;"></p>
+
+                <h3>Luxury Amenities</h3>
+                <div id="amenitiesGrid" style="margin-top:15px;"></div>
+            </div>
+        </div>
+
+        <div class="right-col">
+            <div class="sidebar-form">
+                <div class="agent-card">
+                    <img id="agentImage" class="agent-img" src="">
+                    <div>
+                        <h4 id="agentName" style="margin-bottom:2px;"></h4>
+                        <p style="font-size:0.75rem; color:var(--text-slate); font-weight:700;">OFFICIAL AGENT</p>
+                    </div>
+                </div>
+                <h3 style="margin-bottom:20px;">Inquire About Property</h3>
+                <input type="text" placeholder="Your Name" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+                <input type="email" placeholder="Email Address" style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+                <textarea rows="4" placeholder="I am interested in this property..." style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;"></textarea>
+                <button class="btn-search" style="width:100%;">Send Request</button>
+            </div>
+        </div>
+    </main>
+    <form id="contactForm" class="contact-form">
+    <input type="text" id="contactName" placeholder="Name" required>
+    <input type="email" id="contactEmail" placeholder="Email" required>
+    <textarea id="msgArea" rows="4" placeholder="I am interested..."></textarea>
+    <button type="submit" id="submitRequest" class="btn-search btn-contact-form">Send Request</button>
+</form>
+
+    <script src="script.js"></script>
+    <script>
+        // Specific logic to load details for this page
+        async function loadDetails() {
+            const id = new URLSearchParams(window.location.search).get('id');
+            try {
+                const res = await fetch(`http://localhost:5000/api/properties/${id}`);
+                const p = await res.json();
+
+                document.getElementById('propImage').src = p.image;
+                document.getElementById('propTitle').innerText = p.title;
+                document.getElementById('propPrice').innerText = `$${p.price.toLocaleString()}`;
+                document.getElementById('propAddress').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${p.address}, ${p.city}`;
+                document.getElementById('propDesc').innerText = p.description;
+                document.getElementById('propBeds').innerText = p.beds;
+                document.getElementById('propBaths').innerText = p.baths;
+                document.getElementById('propSqft').innerText = p.sqft.toLocaleString();
+                document.getElementById('propYear').innerText = p.yearBuilt;
+
+                const amGrid = document.getElementById('amenitiesGrid');
+                p.amenities.forEach(am => {
+                    amGrid.innerHTML += `<div class="amenity-tag"><i class="fa-solid fa-check"></i> ${am}</div>`;
+                });
+
+                if(p.agent) {
+                    document.getElementById('agentName').innerText = p.agent.name;
+                    document.getElementById('agentImage').src = p.agent.image;
+                }
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'grid';
+            } catch(e) { 
+                document.getElementById('loading').innerText = "Error loading property details.";
+            }
+        }
+        
+        loadDetails();
+        
+    </script>
+</body>
+</html>
