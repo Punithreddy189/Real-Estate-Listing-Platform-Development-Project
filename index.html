@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DreamHome | Royal Estates</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">DreamHome. <span>Y.PUNITH REDDY</span></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#">Properties</a>
+            <a href="#" id="loginBtn" class="btn-login" onclick="document.getElementById('loginModal').style.display='flex'">Login</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Find Your Royal Estate</h1>
+        <div class="search-container">
+            <div class="search-field">
+                <label>Location</label>
+                <input type="text" id="searchInput" placeholder="City, Zip...">
+            </div>
+            <div class="search-field">
+                <label>Type</label>
+                <select id="searchType">
+                    <option value="All">All Types</option>
+                    <option value="Villa">Villa</option>
+                    <option value="Penthouse">Penthouse</option>
+                </select>
+            </div>
+            <button class="btn-search" onclick="loadProperties()">Search</button>
+        </div>
+    </header>
+
+    <main class="listings-container">
+        <h2 class="collection-title">Exclusive Collection</h2>
+        <div id="propertyGrid" class="property-grid">
+            </div>
+    </main>
+
+    <div id="loginModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; justify-content:center; align-items:center;">
+        <div style="background:white; padding:40px; border-radius:20px; width:400px;">
+            <h3>Member Access</h3><br>
+            <input type="text" id="username" placeholder="Full Name" style="width:100%; padding:10px; margin-bottom:10px;">
+            <input type="email" id="userEmail" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px;">
+            <input type="tel" id="userPhone" placeholder="Phone" style="width:100%; padding:10px; margin-bottom:20px;">
+            <button onclick="login()" style="width:100%; padding:12px; background:#0f172a; color:white; border:none; border-radius:8px;">Enter</button>
+            <button onclick="document.getElementById('loginModal').style.display='none'" style="width:100%; margin-top:10px; background:none; border:none; cursor:pointer;">Close</button>
+        
+    </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div><h3>DreamHome.</h3><p>Luxury Real Estate.</p></div>
+            <div><h3>Quick Links</h3><p>Properties</p></div>
+            <div><h3>Legal</h3><p>Privacy</p></div>
+            <div><h3>Contact</h3><p>(555) 123-4567</p></div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 DreamHome. Designed by <span style="color:#42de63; font-weight:800;">Y.PUNITH REDDY</span></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
